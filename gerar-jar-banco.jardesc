@@ -1,7 +1,7 @@
-<?xml version="1.0" encoding="MacRoman" standalone="no"?>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <jardesc>
-    <jar path="banco-exemplo.jar"/>
-    <options buildIfNeeded="true" compress="true" descriptionLocation="/banco-exemplo/gerar-Jar-Banco.jardesc" exportErrors="true" exportWarnings="true" includeDirectoryEntries="false" overwrite="false" saveDescription="true" storeRefactorings="false" useSourceFolders="false"/>
+    <jar path="banco-exemplo-interface-gerencia/banco-exemplo.jar"/>
+    <options buildIfNeeded="true" compress="true" descriptionLocation="/banco-exemplo-interface-gerencia/gerar-jar-banco.jardesc" exportErrors="true" exportWarnings="true" includeDirectoryEntries="false" overwrite="false" saveDescription="true" storeRefactorings="false" useSourceFolders="false"/>
     <storedRefactorings deprecationInfo="true" structuralOnly="false"/>
     <selectedProjects/>
     <manifest generateManifest="true" manifestLocation="" manifestVersion="1.0" reuseManifest="false" saveManifest="false" usesManifest="true">
@@ -11,11 +11,6 @@
         </sealing>
     </manifest>
     <selectedElements exportClassFiles="true" exportJavaFiles="false" exportOutputFolder="false">
-        <javaElement handleIdentifier="=banco-exemplo/src"/>
-        <file path="/banco-exemplo/gerar-jar-banco.jardesc"/>
-        <file path="/banco-exemplo/contas.txt"/>
-        <file path="/banco-exemplo/.project"/>
-        <file path="/banco-exemplo/.DS_Store"/>
-        <file path="/banco-exemplo/.classpath"/>
+        <folder path="/banco-exemplo-interface-gerencia/bin"/>
     </selectedElements>
 </jardesc>
