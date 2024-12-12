@@ -131,7 +131,12 @@ public class RemoverContaFrame extends JFrame {
 						if (cliente.getContas().size() == 1)
 							throw new RemocaoInvalidaException();
 
-						AdminMenuFrame.banco.removerConta(cliente, numeroConta);
+						try {
+							AdminMenuFrame.banco.removerConta(cliente, numeroConta);
+						} catch (ClienteNaoCadastradoException e) {
+							// TODO Auto-generated catch block
+							e.printStackTrace();
+						}
 						JOptionPane.showMessageDialog(null,
 								"Conta removida com sucesso!", "Sucesso",
 								JOptionPane.INFORMATION_MESSAGE);
