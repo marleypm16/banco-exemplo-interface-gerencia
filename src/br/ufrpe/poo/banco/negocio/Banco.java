@@ -145,11 +145,18 @@ public class Banco implements IGerencia, ICliente {
 
 	@Override
 	public void removerConta(Cliente cliente, String numeroConta)
-			throws RepositorioException, ContaNaoEncontradaException, ClienteNaoPossuiContaException {
-		cliente.removerConta(numeroConta);
+			throws RepositorioException, ContaNaoEncontradaException, ClienteNaoPossuiContaException, ClienteNaoCadastradoException {
+		if (this.procurarCliente(cliente.getCpf()) == null) {
+			throw new ClienteNaoCadastradoException();
+		}
+		if (this.procurarConta(numeroConta) == null) {
+			throw new ContaNaoEncontradaException();
+		}
 		if (!this.contas.remover(numeroConta))
 			throw new ContaNaoEncontradaException();
+		cliente.removerConta(numeroConta);
 		this.clientes.atualizar(cliente);
+		this.contas.remover(numeroConta);
 	}
 
 	@Override

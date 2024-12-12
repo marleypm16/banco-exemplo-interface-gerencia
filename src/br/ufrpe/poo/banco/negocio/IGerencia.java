@@ -124,7 +124,7 @@ public interface IGerencia extends ICliente {
 	 */
 	void removerConta(Cliente cliente, String numeroConta)
 			throws RepositorioException, ContaNaoEncontradaException,
-			ClienteNaoPossuiContaException;
+			ClienteNaoPossuiContaException, ClienteNaoCadastradoException;
 
 	/**
 	 * Atualiza os dados cadastrais do cliente.
