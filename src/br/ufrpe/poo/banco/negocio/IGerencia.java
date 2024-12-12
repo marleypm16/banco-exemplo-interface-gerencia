@@ -33,6 +33,7 @@ public interface IGerencia extends ICliente {
 	 * @param numero
 	 *            numero da conta a ser enconrada.
 	 * @return Conta encontrada. Retorna null se a conta nao for encontrada.
+	 * @throws ContaNaoEncontradaException 
 	 */
 	ContaAbstrata procurarConta(String numero);
 
@@ -81,10 +82,12 @@ public interface IGerencia extends ICliente {
 	 *             Lancada caso nao exista um cliente com o cpf passado.
 	 * @throws RepositorioException
 	 *             Lancada caso ocorra erro no repositorio.
+	 * @throws ContaNaoEncontradaException
+	 *             Lancada caso não existe a conta.
 	 */
 	void associarConta(String cpf, String numeroConta)
 			throws ClienteJaPossuiContaException, ContaJaAssociadaException,
-			ClienteNaoCadastradoException, RepositorioException;
+			ClienteNaoCadastradoException, RepositorioException, ContaNaoEncontradaException;
 
 	/**
 	 * Remove um cliente do repositorio.

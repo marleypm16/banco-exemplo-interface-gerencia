@@ -22,6 +22,7 @@ import br.ufrpe.poo.banco.exceptions.ClienteJaPossuiContaException;
 import br.ufrpe.poo.banco.exceptions.ClienteNaoCadastradoException;
 import br.ufrpe.poo.banco.exceptions.ContaJaAssociadaException;
 import br.ufrpe.poo.banco.exceptions.ContaJaCadastradaException;
+import br.ufrpe.poo.banco.exceptions.ContaNaoEncontradaException;
 import br.ufrpe.poo.banco.exceptions.RepositorioException;
 import br.ufrpe.poo.banco.negocio.Conta;
 import br.ufrpe.poo.banco.negocio.ContaAbstrata;
@@ -182,7 +183,7 @@ public class AssociarContaFrame extends JFrame {
 					} catch (ClienteNaoCadastradoException
 							| ClienteJaPossuiContaException
 							| ContaJaAssociadaException | RepositorioException
-							| ContaJaCadastradaException e) {
+							| ContaJaCadastradaException | ContaNaoEncontradaException e ) {
 						JOptionPane.showMessageDialog(null, e.getMessage(),
 								"Erro", JOptionPane.ERROR_MESSAGE);
 					} catch (CampoVazioException e) {

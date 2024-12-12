@@ -1,5 +1,7 @@
 package br.ufrpe.poo.banco.negocio;
 
+import br.ufrpe.poo.banco.exceptions.ClienteNaoCadastradoException;
+import br.ufrpe.poo.banco.exceptions.ContaNaoEncontradaException;
 import br.ufrpe.poo.banco.exceptions.RepositorioException;
 import br.ufrpe.poo.banco.exceptions.SaldoInsuficienteException;
 import br.ufrpe.poo.banco.exceptions.ValorInvalidoException;

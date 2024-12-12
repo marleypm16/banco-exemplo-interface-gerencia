@@ -18,6 +18,7 @@ import br.ufrpe.poo.banco.exceptions.RenderJurosPoupancaException;
 import br.ufrpe.poo.banco.exceptions.RepositorioException;
 import br.ufrpe.poo.banco.exceptions.SaldoInsuficienteException;
 import br.ufrpe.poo.banco.exceptions.ValorInvalidoException;
+import br.ufrpe.poo.banco.iterator.IteratorCliente;
 
 /**
  * Implementacao do sistema bancario que faz a comunicacao com a persistencia e
@@ -53,13 +54,12 @@ public class Banco implements IGerencia, ICliente {
 	 * 
 	 * @return se o banco nao foi instanciado. Se o banco ja foi instanciado eh
 	 *         retornado <code>null</code>.
-	 * @throws RepositorioException
-	 *             Lancada quando ocorre erro no repositorio.
-	 * @throws InicializacaoSistemaException
-	 *             Lancada quando ocorre erro no repositorio.
+	 * @throws RepositorioException          Lancada quando ocorre erro no
+	 *                                       repositorio.
+	 * @throws InicializacaoSistemaException Lancada quando ocorre erro no
+	 *                                       repositorio.
 	 */
 	public static Banco getInstance() throws RepositorioException, InicializacaoSistemaException {
-
 		if (Banco.instance == null) {
 			try {
 				Banco.instance = new Banco(new RepositorioClientesArquivoBin(), new RepositorioContasArquivoBin());
@@ -92,33 +92,55 @@ public class Banco implements IGerencia, ICliente {
 		return this.contas.procurar(numero);
 	}
 
+	private boolean contaJaAssociada(String numero) {
+		IteratorCliente citerator = this.clientes.getIterator();
+		while (citerator.hasNext()) {
+			Cliente c = citerator.next();
+			if (c.getContas().contains(numero))
+				return true;
+		}
+		return false;
+	}
+
+	// ContaNaoExisteException
 	@Override
-	public void associarConta(String cpf, String numeroConta) throws ClienteJaPossuiContaException,
-			ContaJaAssociadaException, ClienteNaoCadastradoException, RepositorioException {
+	public void associarConta(String cpf, String numeroConta)
+			throws ClienteJaPossuiContaException, ContaJaAssociadaException, ClienteNaoCadastradoException,
+			RepositorioException, ContaNaoEncontradaException {
+		// procura se conta existe
+		ContaAbstrata conta = procurarConta(numeroConta);
+		if (conta == null) {
+			throw new ContaNaoEncontradaException();
+		}
+		// procura se cliente existe
 		Cliente cliente = this.procurarCliente(cpf);
-		if (cliente != null) {
-			ContaAbstrata conta = procurarConta(numeroConta);
-			if (conta == null) {
-				cliente.adicionarConta(numeroConta);
-				this.clientes.atualizar(cliente);
-			} else
-				throw new ContaJaAssociadaException();
-		} else
+		if (cliente == null) {
 			throw new ClienteNaoCadastradoException();
+		}
+		//verifica se conta já está associada com algum cliente
+		if (this.contaJaAssociada(conta.getNumero())) {
+			throw new ContaJaAssociadaException();
+		} 
+		//associa conta ao cliente
+		cliente.adicionarConta(numeroConta);
+		//atualiza cliente no repositorio 
+		this.clientes.atualizar(cliente);
 	}
 
 	@Override
 	public void removerCliente(String cpf) throws RepositorioException, ClienteNaoCadastradoException,
 			ContaNaoEncontradaException, ClienteNaoPossuiContaException {
+		//verifica a existência do cliente
 		Cliente cliente = this.procurarCliente(cpf);
-		int i = 0;
-		while (!cliente.getContas().isEmpty()) {
-			String numeroConta = cliente.consultarNumeroConta(i);
-			i++;
-			this.removerConta(cliente, numeroConta);
-		}
-		if (!this.clientes.remover(cpf))
+		if(cliente == null) {
 			throw new ClienteNaoCadastradoException();
+		}
+		//remove as contas associadas ao cliente
+		for(String numConta : cliente.getContas()) {
+			this.removerConta(cliente, numConta);
+		}
+		//remove cliente do repositorio
+		this.clientes.remover(cpf);
 	}
 
 	@Override
@@ -142,8 +164,8 @@ public class Banco implements IGerencia, ICliente {
 			throws RepositorioException, SaldoInsuficienteException, ValorInvalidoException {
 		if (valor < 0)
 			throw new ValorInvalidoException();
-		if(this.contas.existe(conta.getNumero())){
-			conta.debitar(valor);	
+		if (this.contas.existe(conta.getNumero())) {
+			conta.debitar(valor);
 			this.contas.atualizar(conta);
 		}
 	}
