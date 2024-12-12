@@ -7,7 +7,7 @@ import org.junit.Test;
 public class TestePoupanca {
 
 	@Test
-	public final void testRenderJurosZero() {
+	public final void renderJurosZero() {
 		Poupanca p = new Poupanca("4432",1000);
 		double saldoAntes = p.getSaldo();
 		p.renderJuros(0);
@@ -15,7 +15,7 @@ public class TestePoupanca {
 	}
 	
 	@Test
-	public final void testRenderJurosCinquentaPorcento() {
+	public final void renderJurosCinquentaPorcento() {
 		Poupanca p = new Poupanca("4432",1000);
 		p.renderJuros(0.5);
 		assertEquals(1500, p.getSaldo(), 0);

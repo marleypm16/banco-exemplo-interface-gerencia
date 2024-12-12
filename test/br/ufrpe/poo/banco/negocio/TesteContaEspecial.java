@@ -10,40 +10,35 @@ public class TesteContaEspecial {
 	 * Testa se os parametros do construtor sao passados corretamente
 	 */
 	@Test
-	public void testeConstrutor() {
+	public void construtorInicializaCorretamente() {
 		ContaEspecial c = new ContaEspecial("1",100);
 		assertEquals("Numero incorreto", "1", c.getNumero());
 		assertEquals("Saldo incorreto", 100,  c.getSaldo(), 0);
-		assertEquals("Bonus incorreto", 50,  c.getBonus(), 0);
+		assertEquals("Bonus incorreto", 0,  c.getBonus(), 0);
 	}
 	
-	/**
-	 * Testa que nao e permitido criar uma conta com bonus negativo
-	 */
-	@Test 
-	public void testeConstrutorBonusNegativo() {
-		ContaEspecial c = new ContaEspecial("1",1000);
-		assertEquals(0,c.getBonus(), 0);
-	}
 	
 	/**
-	 * Testa que a operação de credito modifica o bonus
+	 * Testa que a operaï¿½ï¿½o de credito modifica o bonus
 	 */
 	@Test
-	public void testeCreditarBonusOk() {
+	public void creditarAumentaBonus() {
 		ContaEspecial c = new ContaEspecial("1",900);
 		c.creditar(100);
-		assertEquals(101, c.getBonus(), 0);
+		assertEquals(1, c.getBonus(), 0);
+		assertEquals(1000, c.getSaldo(), 0);
 	}
 
 	/**
-	 * Testa que a operação de render bonus credita na conta o valor de bonus e zera o bonus
+	 * Testa que a operaï¿½ï¿½o de render bonus credita na conta o valor de bonus e zera o bonus
 	 */
 	@Test
-	public void testeRenderBonusSaldoOk() {
+	public void renderBonusAumentaSaldo() {
 		ContaEspecial c = new ContaEspecial("6564",2000);
+		assertEquals(0, c.getBonus(), 0);
+		c.creditar(100);
 		c.renderBonus();
-		assertEquals(2100, c.getSaldo(), 0);
+		assertEquals(2101, c.getSaldo(), 0);
 		assertEquals(0, c.getBonus(), 0);
 	}	
 

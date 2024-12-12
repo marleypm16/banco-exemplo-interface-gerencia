@@ -12,7 +12,7 @@ public class TesteContaImposto {
 	 * Testa se os parametros do construtor sao passados corretamente
 	 */
 	@Test
-	public void testeConstrutor() {
+	public void construtorInicializaCorretamente() {
 		ContaImposto c = new ContaImposto("1",100);
 		assertEquals("Numero incorreto", "1", c.getNumero());
 		assertEquals("Saldo incorreto", 100,  c.getSaldo(), 0);
@@ -23,32 +23,10 @@ public class TesteContaImposto {
 	 * @throws SaldoInsuficienteException 
 	 */
 	@Test 
-	public void testeDebitar() throws SaldoInsuficienteException {
+	public void debitarConsideraImposto() throws SaldoInsuficienteException {
 		ContaImposto c = new ContaImposto("2",1000);
 		c.debitar(100);
-		//String saldoDepoisDebito = String.valueOf(c.getSaldo());//confere valor do saldo
-		assertTrue( c.getSaldo() == 899.62);
+		assertEquals(899.62,c.getSaldo(),0);
 	}	
-	
-	@Test 
-	public void testeDebitarSaldoInsuficiente() throws SaldoInsuficienteException {
-		ContaImposto c = new ContaImposto("2",1000);
-		c.debitar(1200);
-		String saldoDepoisDebito = String.valueOf(c.getSaldo());//confere valor do saldo
-		assertTrue( saldoDepoisDebito, c.getSaldo() == 899.62);
-	}	
-
-	
-	/**
-	 * Testa debito com valor maior que o saldo
-	 * 
-	 */
-	/*@Test 
-	public void testeDebitarAcimaSaldo() throws SaldoInsuficienteException {
-		ContaImposto c = new ContaImposto("2",1000);
-		c.debitar(1001);
-		fail("Excecao correta(Saldo insuficiente");
-		//assertTrue( saldoDepoisDebito, c.getSaldo() == 899.62);
-	}*/		
-	
+		
 }

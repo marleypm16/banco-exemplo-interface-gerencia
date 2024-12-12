@@ -23,15 +23,14 @@ import br.ufrpe.poo.banco.exceptions.RepositorioException;
 public class TesteBancoUnidade {
 
 	public static Banco getBancoMock() {
-		//IRepositorioContas contasMock = mock(IRepositorioContas.class);
+		// IRepositorioContas contasMock = mock(IRepositorioContas.class);
 		IRepositorioContas contasMock = mock();
 		Banco bancoMock = new Banco(null, contasMock);
 		return bancoMock;
 	}
 
 	@Test
-	public void testCadastrarNovaConta() throws InicializacaoSistemaException,
-			RepositorioException {
+	public void cadastrarNovaConta() throws InicializacaoSistemaException, RepositorioException {
 
 		Banco banco = getBancoMock();
 
@@ -53,9 +52,8 @@ public class TesteBancoUnidade {
 	}
 
 	@Test(expected = ContaJaCadastradaException.class)
-	public void testCadastrarContaExiste()
-			throws InicializacaoSistemaException, RepositorioException,
-			ContaJaCadastradaException {
+	public void cadastrarContaExiste()
+			throws InicializacaoSistemaException, RepositorioException, ContaJaCadastradaException {
 
 		Banco banco = getBancoMock();
 
@@ -74,25 +72,21 @@ public class TesteBancoUnidade {
 		}
 	}
 
-	@Test
-	public void testeRenderBonusContaNaoEspecial() throws RepositorioException,
-			ContaJaCadastradaException, ContaNaoEncontradaException {
+	@Test(expected = RenderBonusContaEspecialException.class)
+	public void renderBonusContaNaoEspecial() throws RepositorioException, ContaJaCadastradaException,
+			ContaNaoEncontradaException, RenderBonusContaEspecialException {
 		Banco banco = getBancoMock();
 		ContaAbstrata conta = new Conta("1", 0);
 		banco.contas = mock(IRepositorioContas.class);
 		when(banco.contas.inserir(conta)).thenReturn(true);
 		when(banco.contas.procurar("1")).thenReturn(conta);
 		banco.cadastrar(conta);
-		try {
-			banco.renderBonus(conta);
-			fail("N�o deve ser Poss�vel fazer uma conta que n�o seja especial render");
-		} catch (RenderBonusContaEspecialException e) {
-		}
+		banco.renderBonus(conta);
 	}
 
-	@Test
-	public void testeRenderJurosContaExistente() throws RepositorioException,
-			ContaJaCadastradaException, ContaNaoEncontradaException {
+	@Test(expected = RenderBonusContaEspecialException.class)
+	public void renderJurosContaExistente() throws RepositorioException, ContaJaCadastradaException,
+			ContaNaoEncontradaException, RenderBonusContaEspecialException {
 		Banco banco = getBancoMock();
 		ContaAbstrata conta = new ContaEspecial("1", 100);
 		banco.contas = mock(IRepositorioContas.class);
@@ -101,29 +95,9 @@ public class TesteBancoUnidade {
 		banco.cadastrar(conta);
 		ContaEspecial novoObjeto = (ContaEspecial) banco.procurarConta("1");
 		novoObjeto.creditar(100);
-		assertEquals("Bonus:" + novoObjeto.getBonus(), novoObjeto.getBonus(),
-				1, 0.0);
-		try {
-			banco.renderBonus(novoObjeto);
-			assertEquals("Saldo:" + novoObjeto.getSaldo(),
-					novoObjeto.getSaldo(), 201, 0.0);
-		} catch (RenderBonusContaEspecialException e) {
-			fail("O rendimento deveria ocorrer sem levantar exce��es");
-		}
+		assertEquals("Bonus:" + novoObjeto.getBonus(), novoObjeto.getBonus(), 1, 0.0);
+		banco.renderBonus(novoObjeto);
+		assertEquals("Saldo:" + novoObjeto.getSaldo(), novoObjeto.getSaldo(), 201, 0.0);
 	}
 
-	@Test
-	public void testeRenderJurosContaInexistente() throws RepositorioException,
-			ContaNaoEncontradaException {
-		Banco banco = getBancoMock();
-		ContaAbstrata conta = new ContaEspecial("1", 100);
-		banco.contas = mock(IRepositorioContas.class);
-		when(banco.contas.procurar("1")).thenReturn(null);
-		try {
-			banco.renderBonus(conta);
-			fail("A conta n�o foi cadastrada");
-		} catch (RenderBonusContaEspecialException e) {
-		}
-	}
-	
 }

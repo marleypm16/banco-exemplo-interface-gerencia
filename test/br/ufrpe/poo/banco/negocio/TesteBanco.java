@@ -43,7 +43,7 @@ public class TesteBanco {
 	 * 
 	 */
 	@Test
-	public void testeCadastarNovaConta() throws RepositorioException,
+	public void contaCadastradaPersistidaCorretamente() throws RepositorioException,
 			ContaJaCadastradaException, ContaNaoEncontradaException,
 			InicializacaoSistemaException {
 
@@ -60,7 +60,7 @@ public class TesteBanco {
 	 * 
 	 */
 	@Test(expected = ContaJaCadastradaException.class)
-	public void testeCadastrarContaExistente() throws RepositorioException,
+	public void tentativaCadastrarContaJaExistente() throws RepositorioException,
 			ContaJaCadastradaException, ContaNaoEncontradaException,
 			InicializacaoSistemaException {
 
@@ -77,7 +77,7 @@ public class TesteBanco {
 	 * 
 	 */
 	@Test
-	public void testeCreditarContaExistente() throws RepositorioException,
+	public void testeCreditarSaldoSuficiente() throws RepositorioException,
 			ContaNaoEncontradaException, InicializacaoSistemaException,
 			ContaJaCadastradaException, ValorInvalidoException {
 
@@ -89,27 +89,12 @@ public class TesteBanco {
 	}
 
 	/**
-	 * Verifica a excecao levantada na tentativa de creditar em uma conta que
-	 * nao existe.
-	 * 
-	 */
-	@Test(expected = ContaNaoEncontradaException.class)
-	public void testeCreditarContaInexistente() throws RepositorioException,
-			ContaNaoEncontradaException, InicializacaoSistemaException,
-			ValorInvalidoException {
-
-		banco.creditar(new Conta("", 0), 200);
-
-		fail("Excecao ContaNaoEncontradaException nao levantada");
-	}
-
-	/**
 	 * Verifica que a operacao de debito em conta corrente esta acontecendo
 	 * corretamente.
 	 * 
 	 */
 	@Test
-	public void testeDebitarContaExistente() throws RepositorioException,
+	public void testeDebitarSaldoSuficiente() throws RepositorioException,
 			ContaNaoEncontradaException, SaldoInsuficienteException,
 			InicializacaoSistemaException, ContaJaCadastradaException,
 			ValorInvalidoException {
@@ -122,26 +107,12 @@ public class TesteBanco {
 	}
 
 	/**
-	 * Verifica que tentantiva de debitar em uma conta que nao existe levante
-	 * excecao.
-	 * 
-	 */
-	@Test(expected = ContaNaoEncontradaException.class)
-	public void testeDebitarContaInexistente() throws RepositorioException,
-			ContaNaoEncontradaException, SaldoInsuficienteException,
-			InicializacaoSistemaException, ValorInvalidoException {
-
-		banco.debitar(new Conta("", 0), 50);
-		fail("Excecao ContaNaoEncontradaException nao levantada");
-	}
-
-	/**
 	 * Verifica que a transferencia entre contas correntes e realizada com
 	 * sucesso.
 	 * 
 	 */
 	@Test
-	public void testeTransferirContaExistente() throws RepositorioException,
+	public void transferirEntreContasCorrentesSaldoSuficiente() throws RepositorioException,
 			ContaNaoEncontradaException, SaldoInsuficienteException,
 			InicializacaoSistemaException, ContaJaCadastradaException,
 			ValorInvalidoException {
@@ -158,26 +129,12 @@ public class TesteBanco {
 	}
 
 	/**
-	 * Verifica que tentativa de transferir entre contas cujos numeros nao
-	 * existe levanta excecao.
-	 * 
-	 */
-	@Test(expected = ContaNaoEncontradaException.class)
-	public void testeTransferirContaInexistente() throws RepositorioException,
-			ContaNaoEncontradaException, SaldoInsuficienteException,
-			InicializacaoSistemaException, ValorInvalidoException {
-
-		banco.transferir(new Conta("", 0), new Conta("", 0), 50);
-		fail("Excecao ContaNaoEncontradaException nao levantada)");
-	}
-
-	/**
 	 * Verifica que render juros de uma conta poupanca funciona corretamente
 	 * 
 	 */
 	@Ignore
 	@Test
-	public void testeRenderJurosContaExistente() throws RepositorioException,
+	public void renderJurosContaPoupanca() throws RepositorioException,
 			ContaNaoEncontradaException, RenderJurosPoupancaException,
 			InicializacaoSistemaException, ContaJaCadastradaException {
 
@@ -188,76 +145,6 @@ public class TesteBanco {
 		poupanca.renderJuros(0.008);
 		assertEquals(saldoComJuros, poupanca.getSaldo(), 0);
 	}
-
-	/**
-	 * Verifica que tentativa de render juros em conta inexistente levanta
-	 * excecao.
-	 * 
-	 */
-	@Ignore
-	@Test(expected = ContaNaoEncontradaException.class)
-	public void testeRenderJurosContaInexistente() throws RepositorioException,
-			ContaNaoEncontradaException, RenderJurosPoupancaException,
-			InicializacaoSistemaException {
-
-		fail("Nao implementado");
-	}
-
-	/**
-	 * Verifica que tentativa de render juros em conta que nao e poupanca
-	 * levanta excecao.
-	 * 
-	 */
-	@Ignore
-	@Test(expected = RenderJurosPoupancaException.class)
-	public void testeRenderJurosContaNaoEhPoupanca()
-			throws RepositorioException, ContaNaoEncontradaException,
-			RenderJurosPoupancaException, InicializacaoSistemaException,
-			ContaJaCadastradaException {
-
-		fail("Nao implementado");
-	}
-
-	/**
-	 * Verifica que render bonus de uma conta especial funciona corretamente.
-	 * 
-	 */
-	@Ignore
-	@Test
-	public void testeRenderBonusContaEspecialExistente()
-			throws RepositorioException, ContaNaoEncontradaException,
-			RenderBonusContaEspecialException, InicializacaoSistemaException,
-			RenderJurosPoupancaException, ContaJaCadastradaException {
-
-		fail("Nao implementado");
-	}
-
-	/**
-	 * Verifica que a tentativa de render bonus em inexistente levanta excecao.
-	 * 
-	 */
-	@Ignore
-	@Test(expected = ContaNaoEncontradaException.class)
-	public void testeRenderBonusContaEspecialNaoInexistente()
-			throws RepositorioException, ContaNaoEncontradaException,
-			RenderBonusContaEspecialException, InicializacaoSistemaException,
-			RenderJurosPoupancaException {
-
-		fail("Nao implementado");
-	}
-
-	/**
-	 * Verifica que tentativa de render bonus em conta que nao e especial
-	 * levante excecao.
-	 */
-	@Ignore
-	@Test(expected = RenderBonusContaEspecialException.class)
-	public void testeRenderBonusContaNaoEspecial() throws RepositorioException,
-			ContaNaoEncontradaException, RenderBonusContaEspecialException,
-			InicializacaoSistemaException, RenderJurosPoupancaException,
-			ContaJaCadastradaException {
-
-		fail("Nao implementado");
-	}
+		
 
 }

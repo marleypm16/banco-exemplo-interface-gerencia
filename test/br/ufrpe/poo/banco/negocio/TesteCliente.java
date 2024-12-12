@@ -9,7 +9,7 @@ import br.ufrpe.poo.banco.exceptions.ClienteJaPossuiContaException;
 import br.ufrpe.poo.banco.exceptions.ClienteNaoPossuiContaException;
 
 /**
- * Classe de teste responsável por testar as condições dos métodos
+ * Classe de teste responsï¿½vel por testar as condiï¿½ï¿½es dos mï¿½todos
  * adicionarConta e removerConta da classe Cliente.
  * 
  * @author Aluno
@@ -18,61 +18,62 @@ import br.ufrpe.poo.banco.exceptions.ClienteNaoPossuiContaException;
 public class TesteCliente {
 
 	/**
-	 * Testa a inserção de uma nova conta vinculada ao cliente
+	 * Testa a inserï¿½ï¿½o de uma nova conta vinculada ao cliente
+	 * 
+	 * @throws ClienteJaPossuiContaException
 	 */
 	@Test
-	public void adicionarContaTest() {
+	public void adicionaContasSucesso() throws ClienteJaPossuiContaException {
 		Cliente c1 = new Cliente("nome", "123");
-		try {
-			c1.adicionarConta("1");
-		} catch (ClienteJaPossuiContaException e) {
-			fail();
-		}
-		assertEquals(c1.procurarConta("1"), 0);
+		c1.adicionarConta("2");
+		c1.adicionarConta("1");
+		assertEquals(c1.getContas().size(),2,0);
+		assertEquals(c1.procurarConta("2"), 0);
+		assertEquals(c1.procurarConta("1"), 1);
 	}
 
 	/**
-	 * Testa a condição da tentativa de adicionar uma conta já existente à lista
-	 * de contas do cliente
+	 * Testa a condiï¿½ï¿½o da tentativa de adicionar uma conta jï¿½ existente ï¿½ lista de
+	 * contas do cliente
 	 * 
 	 * @throws ClienteJaPossuiContaException
 	 */
 	@Test(expected = ClienteJaPossuiContaException.class)
-	public void adicionarContaJaExistenteTest()
-			throws ClienteJaPossuiContaException {
+	public void adicionarContaJaExistente() throws ClienteJaPossuiContaException {
 		Cliente c1 = new Cliente("nome", "123");
-		c1.adicionarConta("1"); // adiciona a conta a 1ª vez
-		c1.adicionarConta("1"); // tentativa de adicionar a mesma conta
-								// novamente
+		c1.adicionarConta("1"); 
+		c1.adicionarConta("2"); 
+		c1.adicionarConta("3"); 
+		c1.adicionarConta("4"); 
+		c1.adicionarConta("3"); // tentativa de adicionar a mesma conta
 	}
 
 	/**
-	 * Teste a remoção de uma conta da lista de contas do cliente
+	 * Teste a remoï¿½ï¿½o de uma conta da lista de contas do cliente
+	 * 
+	 * @throws ClienteJaPossuiContaException
+	 * @throws ClienteNaoPossuiContaException
 	 */
 	@Test
-	public void removerContaClienteTest() {
+	public void removerContaCliente() throws ClienteJaPossuiContaException, ClienteNaoPossuiContaException {
 		Cliente c1 = new Cliente("nome", "123");
-		try {
-			c1.adicionarConta("1"); // adiciona conta com número 1
-			c1.removerConta("1"); // remove a conta de número 1
-		} catch (Exception e) {
-			fail("Exceção inesperada lancada!");
-		}
-
+		c1.adicionarConta("1"); 
+		c1.adicionarConta("2"); 
+		c1.removerConta("2"); 
+		c1.removerConta("1"); 
 		assertEquals(c1.procurarConta("1"), -1);
+		assertEquals(c1.procurarConta("2"), -1);
 	}
 
 	/**
-	 * Testa a remoção de uma determinada conta que não está vinculada ao
-	 * cliente
+	 * Testa a remoï¿½ï¿½o de uma determinada conta que nï¿½o estï¿½ vinculada ao cliente
 	 * 
 	 * @throws ClienteNaoPossuiContaException
 	 */
 	@Test(expected = ClienteNaoPossuiContaException.class)
-	public void removerContaClienteSemContaTest()
-			throws ClienteNaoPossuiContaException {
+	public void removerContaClienteSemContaTest() throws ClienteNaoPossuiContaException {
 		Cliente c1 = new Cliente("nome", "123");
-		c1.removerConta("1"); // tenta remover a conta de um cliente sem contas
+		c1.removerConta("1"); 
 	}
 
 }

@@ -92,7 +92,7 @@ public class Banco implements IGerencia, ICliente {
 		return this.contas.procurar(numero);
 	}
 
-	private boolean contaJaAssociada(String numero) {
+	boolean contaJaAssociada(String numero) {
 		IteratorCliente citerator = this.clientes.getIterator();
 		while (citerator.hasNext()) {
 			Cliente c = citerator.next();
@@ -105,8 +105,8 @@ public class Banco implements IGerencia, ICliente {
 	// ContaNaoExisteException
 	@Override
 	public void associarConta(String cpf, String numeroConta)
-			throws ClienteJaPossuiContaException, ContaJaAssociadaException, ClienteNaoCadastradoException,
-			RepositorioException, ContaNaoEncontradaException {
+			throws ClienteNaoCadastradoException, ContaNaoEncontradaException, ClienteJaPossuiContaException,
+			ContaJaAssociadaException, RepositorioException {
 		// procura se conta existe
 		ContaAbstrata conta = procurarConta(numeroConta);
 		if (conta == null) {
@@ -117,29 +117,29 @@ public class Banco implements IGerencia, ICliente {
 		if (cliente == null) {
 			throw new ClienteNaoCadastradoException();
 		}
-		//verifica se conta já está associada com algum cliente
+		// verifica se conta já está associada com algum cliente
 		if (this.contaJaAssociada(conta.getNumero())) {
 			throw new ContaJaAssociadaException();
-		} 
-		//associa conta ao cliente
+		}
+		// associa conta ao cliente
 		cliente.adicionarConta(numeroConta);
-		//atualiza cliente no repositorio 
+		// atualiza cliente no repositorio
 		this.clientes.atualizar(cliente);
 	}
 
 	@Override
 	public void removerCliente(String cpf) throws RepositorioException, ClienteNaoCadastradoException,
 			ContaNaoEncontradaException, ClienteNaoPossuiContaException {
-		//verifica a existência do cliente
+		// verifica a existência do cliente
 		Cliente cliente = this.procurarCliente(cpf);
-		if(cliente == null) {
+		if (cliente == null) {
 			throw new ClienteNaoCadastradoException();
 		}
-		//remove as contas associadas ao cliente
-		for(String numConta : cliente.getContas()) {
+		// remove as contas associadas ao cliente
+		for (String numConta : cliente.getContas()) {
 			this.removerConta(cliente, numConta);
 		}
-		//remove cliente do repositorio
+		// remove cliente do repositorio
 		this.clientes.remover(cpf);
 	}
 

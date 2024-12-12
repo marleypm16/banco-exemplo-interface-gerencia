@@ -74,7 +74,7 @@ public interface IGerencia extends ICliente {
 	 *            Numero da conta a ser associada com o cliente.
 	 * @throws ClienteJaPossuiContaException
 	 *             Lancada caso o cliente ja tenha uma conta com o numero
-	 *             passado a associada a ele.
+	 *             fornecido.
 	 * @throws ContaJaAssociadaException
 	 *             Lancada caso o numero da conta ja esteja associada a outro
 	 *             cliente.
