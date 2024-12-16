@@ -167,13 +167,7 @@ public class AssociarContaFrame extends JFrame {
 								.getText();
 						if (numeroConta.equals(""))
 							throw new CampoVazioException("numero da conta");
-						
-						if(tipoCorrenteRadioButton.isEnabled()) {
-							System.out.println("C");
-						}else if(tipoPoupancaRadioButton.isEnabled()){
-							System.out.println("P");
-						}
-						
+												
 						tipoConta.setNumero(numeroConta);
 						AdminMenuFrame.banco.cadastrar(tipoConta);
 
