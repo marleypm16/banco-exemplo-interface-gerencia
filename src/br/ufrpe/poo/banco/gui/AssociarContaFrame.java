@@ -167,13 +167,20 @@ public class AssociarContaFrame extends JFrame {
 								.getText();
 						if (numeroConta.equals(""))
 							throw new CampoVazioException("numero da conta");
+						
+						if(tipoCorrenteRadioButton.isEnabled()) {
+							System.out.println("C");
+						}else if(tipoPoupancaRadioButton.isEnabled()){
+							System.out.println("P");
+						}
+						
+						tipoConta.setNumero(numeroConta);
+						AdminMenuFrame.banco.cadastrar(tipoConta);
 
 						AdminMenuFrame.banco.associarConta(cpf, numeroConta);
 
 						tipoConta.setNumero(numeroConta);
-						tipoConta.setSaldo(0);
-
-						AdminMenuFrame.banco.cadastrar(tipoConta);
+						tipoConta.setSaldo(0);						
 
 						JOptionPane.showMessageDialog(null,
 								"Conta associada ao cliente com sucesso!",
