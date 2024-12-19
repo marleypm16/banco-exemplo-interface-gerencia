@@ -92,11 +92,11 @@ public class Banco implements IGerencia, ICliente {
 		return this.contas.procurar(numero);
 	}
 
-	boolean contaJaAssociada(String numero) {
+	private boolean contaAssociadaOutroCliente(String numero, String cpf) {
 		IteratorCliente citerator = this.clientes.getIterator();
 		while (citerator.hasNext()) {
 			Cliente c = citerator.next();
-			if (c.getContas().contains(numero))
+			if (c.getContas().contains(numero) && !c.getCpf().equals(cpf))
 				return true;
 		}
 		return false;
@@ -118,7 +118,7 @@ public class Banco implements IGerencia, ICliente {
 			throw new ClienteNaoCadastradoException();
 		}
 		// verifica se conta já está associada com algum cliente
-		if (this.contaJaAssociada(conta.getNumero())) {
+		if (this.contaAssociadaOutroCliente(conta.getNumero(),cpf)) {
 			throw new ContaJaAssociadaException();
 		}
 		// associa conta ao cliente

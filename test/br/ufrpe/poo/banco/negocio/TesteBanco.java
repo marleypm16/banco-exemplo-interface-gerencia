@@ -8,14 +8,11 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
-import br.ufrpe.poo.banco.dados.RepositorioContasArquivoBin;
 import br.ufrpe.poo.banco.exceptions.ContaJaCadastradaException;
 import br.ufrpe.poo.banco.exceptions.ContaNaoEncontradaException;
 import br.ufrpe.poo.banco.exceptions.InicializacaoSistemaException;
-import br.ufrpe.poo.banco.exceptions.RenderBonusContaEspecialException;
 import br.ufrpe.poo.banco.exceptions.RenderJurosPoupancaException;
 import br.ufrpe.poo.banco.exceptions.RepositorioException;
 import br.ufrpe.poo.banco.exceptions.SaldoInsuficienteException;
@@ -35,7 +32,7 @@ public class TesteBanco {
 		bw.close();
 		
 		Banco.instance = null;
-		TesteBanco.banco = Banco.getInstance();
+		banco = Banco.getInstance();
 	}
 
 	/**
@@ -47,7 +44,6 @@ public class TesteBanco {
 			ContaJaCadastradaException, ContaNaoEncontradaException,
 			InicializacaoSistemaException {
 
-		Banco banco = new Banco(null, new RepositorioContasArquivoBin());
 		ContaAbstrata conta1 = new Conta("1", 100);
 		banco.cadastrar(conta1);
 		ContaAbstrata conta2 = banco.procurarConta("1");
@@ -132,7 +128,6 @@ public class TesteBanco {
 	 * Verifica que render juros de uma conta poupanca funciona corretamente
 	 * 
 	 */
-	@Ignore
 	@Test
 	public void renderJurosContaPoupanca() throws RepositorioException,
 			ContaNaoEncontradaException, RenderJurosPoupancaException,
